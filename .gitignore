@@ -4,7 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
-.yarn/install-state.gz
+
+# JetBrains IDE files
+.idea/
 
 # testing
 /coverage
@@ -24,10 +26,19 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
 # local env files
 .env*.local
-
+.env
+node_modules
+app/
+package-lock.json
+package.json
+tsconfig.json
+.next
+dist
+public 
 # vercel
 .vercel
 
