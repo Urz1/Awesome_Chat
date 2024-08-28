@@ -1,10 +1,10 @@
 import { ChatGroq } from "@langchain/groq";
-import { HumanMessage } from "@langchain/core/messages";
+// import { HumanMessage } from "@langchain/core/messages";
 import { InMemoryChatMessageHistory } from "@langchain/core/chat_history";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableWithMessageHistory } from "@langchain/core/runnables";
-import { config } from "dotenv";
-config();
+import { config as LoadEnv } from "dotenv";
+LoadEnv();
 
 const model = new ChatGroq({
   model: "mixtral-8x7b-32768",
@@ -13,6 +13,7 @@ const model = new ChatGroq({
 });
 
 const messageHistories: Record<string, InMemoryChatMessageHistory> = {};
+
 const prompt = ChatPromptTemplate.fromMessages([
   [
     "system",
@@ -36,31 +37,35 @@ const withMessageHistory = new RunnableWithMessageHistory({
   historyMessagesKey: "chat_history",
 });
 
-const confi = {
+const config = {
   configurable: {
     sessionId: "ab",
   },
 };
 
 // were tew tew tew koy ke grok etekemalehu lame show you
-const main = async () => {
-  const response = await withMessageHistory.invoke(
-    { input: "hi my name is sadam" },
-    confi
+const main = async ({Txtprompt}:{Txtprompt:string}) => {
+  const response = await withMessageHistory.stream(
+    { input: Txtprompt },
+    config
   );
-  response.content;
-  console.log(response.content);
+  for await (const streams of response){
+    console.log('|', streams.content)
+  }
   const followmain = async () => {
-    const followupResponse = await withMessageHistory.invoke(
+    const followupResponse = await withMessageHistory.stream(
       {
-        input: "What's my name?",
+        input: Txtprompt,
       },
-      confi
+      config
     );
+    for await (const chunk of followupResponse){
+      console.log(' ', chunk.content)
+    }
 
-    followupResponse.content;
-    console.log(followupResponse.content);
+  
   };
-  followmain();
+
+ await followmain();
 };
-main();
+export default main;
