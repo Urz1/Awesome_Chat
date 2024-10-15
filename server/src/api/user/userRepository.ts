@@ -16,7 +16,7 @@ class UserRepository {
     return UserSchema.findByIdAndDelete(id);
   }
 
-  async updateUser(id: any) {
+  async updateUser(id: any, p0: { refreshToken: null; }) {
     return UserSchema.findByIdAndUpdate(id);
   }
 }
