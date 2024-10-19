@@ -1,24 +1,28 @@
-import UserSchema from "./userModel";
+import {UserModel} from "./userModel";
 
 class UserRepository {
+
   async createUser(user: any) {
-    return UserSchema.create(user);
+    return UserModel.create(user);
   }
-
   async findUsers() {
-    return UserSchema.find({});
+    return UserModel.find({});
   }
-  async findUser(id: any) {
-    return UserSchema.findById(id);
+  async findUser(id: string) {
+    return UserModel.findById(id);
+  }
+  async findByEmail(email: string) {
+    return UserModel.findOne({email});
   }
 
-  async deleteUser(id: any) {
-    return UserSchema.findByIdAndDelete(id);
+  async deleteUser(id: string) {
+    return UserModel.findByIdAndDelete(id);
   }
 
-  async updateUser(id: any, p0: { refreshToken: null; }) {
-    return UserSchema.findByIdAndUpdate(id);
+  async updateUser(id: string, user:any) {
+    return UserModel.findByIdAndUpdate(id,user,{new:true});
   }
+
 }
 
-export default new UserRepository;
+export default UserRepository;
